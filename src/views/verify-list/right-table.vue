@@ -5,62 +5,19 @@
       :data="tableData"
     >
       <el-table-column
-        prop="date"
-        :label="labelData"
+        v-for="(item,index) in labelData"
+        :key="item.key"
+        :prop="item.key"
+        :label="item.key"
       >
         <template slot-scope="scope">
           <el-tag
-            v-if="scope.row.date"
+            v-if="scope.row[item.key]"
             closable
             disable-transitions
-            @close="handleClose('date', scope.row.date)"
+            @close="handleClose(item, scope.row[item.key])"
           >
-            {{scope.row.date}}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-      >
-        <template slot-scope="scope">
-          <el-tag
-            v-if="scope.row.name"
-            closable
-            disable-transitions
-            @close="handleClose('name',scope.row.name)"
-          >
-            {{scope.row.name}}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址"
-      >
-        <template slot-scope="scope">
-          <el-tag
-            v-if="scope.row.address"
-            closable
-            disable-transitions
-            @close="handleClose('address',scope.row.address)"
-          >
-            {{scope.row.address}}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="tag"
-        label="标签"
-      >
-        <template slot-scope="scope">
-          <el-tag
-            v-if="scope.row.tag"
-            closable
-            disable-transitions
-            @close="handleClose('tag', scope.row.tag)"
-          >
-            {{scope.row.tag}}
+            {{scope.row[item.key]}}
           </el-tag>
         </template>
       </el-table-column>
@@ -78,7 +35,7 @@
 export default {
   data() {
     return {
-      labelData: ['时间', '姓名', '地址', '标签'],
+      labelData: [{key:"date", name: "时间"}, {key: "name", name: "姓名"},{key: "address", name: "地址"},{key: "tag", name: "标签"}],
       tableData: [
         {
           date: '2016-05-02',
