@@ -3,11 +3,10 @@
 </template>
 
 <script>
-  export default {
-    name: 'header'
-  }
+export default {
+  name: 'headerNav'
+}
 </script>
 
 <style scoped>
-
 </style>

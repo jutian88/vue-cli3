@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <headerNav></headerNav>
+      <headerNav />
       <leftMenu></leftMenu>
       <div class="rightWrap">
         <router-view :key="$route.fullPath"></router-view>
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-  import headerNav from './components/header'
-  import leftMenu from './components/leftMenu'
-  export default {
-    name: 'app',
-    components: { headerNav, leftMenu }
-  }
+import headerNav from './components/header'
+import leftMenu from './components/leftMenu'
+export default {
+  name: 'app',
+  components: { headerNav, leftMenu }
+}
 </script>
 
 <style lang="stylus">

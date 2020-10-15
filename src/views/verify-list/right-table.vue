@@ -1,6 +1,7 @@
 <template>
   <el-table
     :data="tableData"
+    border
     stripe
     style="width: 100%">
     <el-table-column
