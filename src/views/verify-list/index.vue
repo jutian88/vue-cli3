@@ -1,6 +1,6 @@
 <template>
   <main class="main">
-    <left-table class="left-wrap" />
+<!--    <left-table class="left-wrap" />-->
     <right-table class="right-wrap" />
   </main>
 </template>
@@ -26,6 +26,6 @@ export default {
 }
 .left-wrap,
 .right-wrap {
-  width: 50%;
+  width: 100%;
 }
 </style>
