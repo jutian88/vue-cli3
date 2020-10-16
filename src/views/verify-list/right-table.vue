@@ -100,6 +100,9 @@ export default {
               }
             }
             this.currentColumn = currentColumn
+            // 获取tr元素 改变其样式
+            const todoIndex = (this.currentRow - 1) * this.labelData.length + currentColumn -1
+            todoIndex > 0 ?  document.querySelectorAll("table td")[todoIndex].style.backgroundColor = "red" : null
           }
         })
       } else {
