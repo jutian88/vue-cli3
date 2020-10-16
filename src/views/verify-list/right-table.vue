@@ -8,14 +8,14 @@
         v-for="(item,index) in labelData"
         :key="item.enName"
         :prop="item.enName"
-        :label="item.enName"
+        :label="item.cnName"
       >
         <template slot-scope="scope">
           <el-tag
             v-if="scope.row[item.enName]"
             closable
             disable-transitions
-            @close="handleClose(item, scope.row, scope.$index)"
+            @close="handleClose(item, scope.$index)"
           >
             {{scope.row[item.enName]}}
           </el-tag>
@@ -23,7 +23,7 @@
       </el-table-column>
     </el-table>
     <el-switch
-      :style="{marginTop: '100px', marginLeft: '800px'}"
+      :style="{marginTop: '10px', marginLeft: '800px'}"
       v-model="isTrunOn"
       active-color="#13ce66"
     >
@@ -44,7 +44,7 @@ export default {
       tableData: [
         {
           date: '2016-05-02',
-          name: '',
+          name: '王小虎',
           address: '1518 弄',
           tag: '家'
         },
@@ -55,55 +55,62 @@ export default {
           tag: '公司'
         },
         {
-          date: '2016-05-01',
-          name: '王小虎',
+          date: '2020-10-2',
+          name: '',
           address: '1519 弄',
           tag: '家1'
         },
         {
           date: '2016-05-03',
-          name: '王小虎',
+          name: '11',
           address: ' 1516 弄',
           tag: '公司2'
         }
       ],
-      isTrunOn: false
+      isTrunOn: false,
+      toDoTableData: [],
+      currentRow: 0,
+      currentColumn: 0,
+      todoIndex: 0
     }
+  },
+  created() {
+    this.toDoTableData = JSON.parse(JSON.stringify(this.tableData))
   },
   watch: {
     // 监听弹窗是否打开
     isTrunOn(val) {
       if (val) {
         console.log('开始启动')
-        this.tableData.map((obj, index) => {
-          console.log(this.isTrunOn, index + '--index')
-          // console.log( Object.keys(obj)); //获取对象的属性名
-          // console.log( Object.values(obj)); // 获取对象的属性值
+        this.toDoTableData.map((obj, index) => {
           // 第一层判断
           if (this.isTrunOn) {
-            console.log('进来1', index + '--index')
-            for (const name in obj) {
-              // 第二层判断
-              if (name == 'name' && this.isTrunOn) {
-                console.log('进来2', index + '--index', !obj[name])
-                // 第三层判断
-                if (!obj[name]) {
-                  console.log('进来3', index + '--index', obj, name + '-----暂停的重要参数')
-                  console.log('得出的行列--' + index + name)
-                  this.isTrunOn = false
-                  break
-                }
+            let currentColumn = 0
+            // console.log('进来1', index + '--index')
+            for (const enName in obj) {
+              currentColumn++
+              // 第二层判断: 无值时或者手动暂停
+              if (!obj[enName]) {
+                this.currentRow =  index +1
+                // console.log('进来3', index + '--行')
+                this.isTrunOn = false
+                break
+              } else {
+                delete this.toDoTableData[index][enName]
               }
             }
+            this.currentColumn = currentColumn
           }
         })
       } else {
-        console.log('停止')
+        this.toDoTableData.splice(0, this.currentRow)
+        console.log("当前行列: "+this.currentRow+'-'+this.currentColumn);
+        console.log(this.toDoTableData, '停止')
       }
     }
   },
   methods: {
-    handleClose(item, row, index) {
+    handleClose(item, index) {
       let obj = this.tableData[index]
       const enName = item.enName
       // const changedTag = obj.filter(elem => elem[enName] == row[item.key])[0]
