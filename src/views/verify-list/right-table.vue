@@ -6,18 +6,18 @@
     >
       <el-table-column
         v-for="(item,index) in labelData"
-        :key="item.key"
-        :prop="item.key"
-        :label="item.key"
+        :key="item.enName"
+        :prop="item.enName"
+        :label="item.enName"
       >
         <template slot-scope="scope">
           <el-tag
-            v-if="scope.row[item.key]"
+            v-if="scope.row[item.enName]"
             closable
             disable-transitions
-            @close="handleClose(item, scope.row[item.key])"
+            @close="handleClose(item, scope.row, scope.$index)"
           >
-            {{scope.row[item.key]}}
+            {{scope.row[item.enName]}}
           </el-tag>
         </template>
       </el-table-column>
@@ -35,7 +35,12 @@
 export default {
   data() {
     return {
-      labelData: [{key:"date", name: "时间"}, {key: "name", name: "姓名"},{key: "address", name: "地址"},{key: "tag", name: "标签"}],
+      labelData: [
+        { enName: 'date', cnName: '时间' },
+        { enName: 'name', cnName: '姓名' },
+        { enName: 'address', cnName: '地址' },
+        { enName: 'tag', cnName: '标签' }
+      ],
       tableData: [
         {
           date: '2016-05-02',
@@ -98,9 +103,11 @@ export default {
     }
   },
   methods: {
-    handleClose(name, val) {
-      const changedTag = this.tableData.filter(elem => elem[name] == val)[0]
-      changedTag[name] = null
+    handleClose(item, row, index) {
+      let obj = this.tableData[index]
+      const enName = item.enName
+      // const changedTag = obj.filter(elem => elem[enName] == row[item.key])[0]
+      obj[enName] = null
     }
   }
 }
