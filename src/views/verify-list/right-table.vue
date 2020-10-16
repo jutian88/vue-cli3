@@ -67,11 +67,11 @@ export default {
           tag: '公司2'
         }
       ],
-      isTrunOn: false,
-      toDoTableData: [],
-      currentRow: 0,
-      currentColumn: 0,
-      todoIndex: 0
+      isTrunOn: false, //开始按钮是否打开状态
+      toDoTableData: [], // 剩余未被校验的表
+      currentRow: 0, //当前的行: 从1开始
+      currentColumn: 0, //当前的列: 从1开始
+      todoIndex: 0, // 停留的index序列
     }
   },
   created() {
@@ -82,33 +82,42 @@ export default {
     isTrunOn(val) {
       if (val) {
         console.log('开始启动')
-        this.toDoTableData.map((obj, index) => {
+        this.tableData.map((obj, index) => {
           // 第一层判断
           if (this.isTrunOn) {
+            // let currentColumn = this.todoIndex > 0 ?  this.currentColumn+ 0: 0
             let currentColumn = 0
             // console.log('进来1', index + '--index')
-            for (const enName in obj) {
+            for (let enName in obj) {
               currentColumn++
               // 第二层判断: 无值时或者手动暂停
               if (!obj[enName]) {
+                console.log('进来了');
                 this.currentRow =  index +1
                 // console.log('进来3', index + '--行')
                 this.isTrunOn = false
                 break
               } else {
-                delete this.toDoTableData[index][enName]
+                this.currentRow = 0 // 只是测试一次循环, 记得删除这行代码, 打开下行的代码
+                // delete this.toDoTableData[index][enName]
               }
             }
             this.currentColumn = currentColumn
             // 获取tr元素 改变其样式
-            const todoIndex = (this.currentRow - 1) * this.labelData.length + currentColumn -1
-            todoIndex > 0 ?  document.querySelectorAll("table td")[todoIndex].style.backgroundColor = "red" : null
+            console.log(this.currentRow +'...'+currentColumn);
+            const todoIndex = +(this.currentRow - 1) * this.labelData.length + currentColumn -1
+            // 判断todoIndex变化
+            if(todoIndex > 0) {
+              this.todoIndex = todoIndex
+              console.log('todoIndex: '+this.todoIndex);
+              console.log(document.querySelectorAll("table td")[todoIndex]);
+              document.querySelectorAll("table td")[todoIndex].style.backgroundColor = "red"
+            }
           }
         })
       } else {
-        this.toDoTableData.splice(0, this.currentRow)
-        console.log("当前行列: "+this.currentRow+'-'+this.currentColumn);
-        console.log(this.toDoTableData, '停止')
+        this.toDoTableData.splice(0, this.currentRow -1)
+        console.log('停止---'+"当前行列: "+ this.currentRow+'-'+ this.currentColumn);
       }
     }
   },
